@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -26,8 +29,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        Log::info($request->all());
-        return ['message'=>'I have a message for you'];
+       return User::create([
+           'name'=>$request['name'],
+           'email'=>$request['email'],
+           'password'=>Hash::make($request['password']),
+           'remember_token' => Str::random(10),
+       ]);
     }
 
     /**
